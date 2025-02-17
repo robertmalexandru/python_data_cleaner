@@ -1,8 +1,28 @@
-Data Cleaner Script Explanation
+# Python Data Cleaner
+
+## Table of Contents
+- [Required Libraries](#1-required-libraries)
+- [Utility Functions](#2-utility-functions)
+   - [2.1 Random Delay Function](#21-random-delay-function)
+   - [2.2 Dataset Loading Function](#22-dataset-loading-function)
+- [Data Cleaning Functions](#3-data-cleaning-functions)
+   - [3.1 Handling Duplicates](#31-handling-duplicates)
+   - [3.2 Handling Missing Values](#32-handling-missing-values)
+   - [3.3 Dropping Unnecessary Columns](#33-dropping-unnecessary-columns)
+   - [3.4 Standardizing Column Names](#34-standardizing-column-names)
+   - [3.5 Handling Outliers](#35-handling-outliers)
+- [Main Cleaning Function](#4-main-cleaning-function)
+- [Example Usage](#5-example-usage)
+- [Key Features of the Data Cleaner](#key-features-of-the-data-cleaner)
+
 This guide explains a comprehensive data cleaning script that handles various common data preparation tasks. The script is designed to work with multiple file formats and implements several best practices for data cleaning.
+
 Let's break down each component and understand how it works.
-1. Required Libraries
+
+## 1. Required Libraries
+
 First, let's import all the necessary libraries:
+
 ```python
 import pandas as pd
 import numpy as np
@@ -11,9 +31,13 @@ import os
 import random
 from pathlib import Path
 ```
-2. Utility Functions
-2.1 Random Delay Function
+
+## 2. Utility Functions
+
+### 2.1 Random Delay Function
+
 This function adds a random delay between operations, which can be useful for user experience and resource management:
+
 ```python
 def random_delay(min_sec=1, max_sec=4):
     """Generates a random delay between min_sec and max_sec."""
@@ -21,8 +45,11 @@ def random_delay(min_sec=1, max_sec=4):
     print(f'Please wait {delay} seconds...')
     time.sleep(delay)
 ```
-2.2 Dataset Loading Function
+
+### 2.2 Dataset Loading Function
+
 This function handles multiple file formats (CSV, Excel, JSON, Parquet) and loads them appropriately:
+
 ```python
 def load_dataset(data_path):
     """Loads a dataset based on its file type."""
@@ -38,9 +65,13 @@ def load_dataset(data_path):
     else:
         raise ValueError('Unsupported file type. Please provide a CSV, Excel, JSON, or Parquet file.')
 ```
-3. Data Cleaning Functions
-3.1 Handling Duplicates
+
+## 3. Data Cleaning Functions
+
+### 3.1 Handling Duplicates
+
 This function identifies and removes duplicate records while saving them for reference:
+
 ```python
 def handle_duplicates(data, data_name):
     """Handles duplicate records in the dataset."""
@@ -54,8 +85,11 @@ def handle_duplicates(data, data_name):
         data = data.drop_duplicates()
     return data
 ```
-3.2 Handling Missing Values
+
+### 3.2 Handling Missing Values
+
 This function deals with missing values differently based on the column type:
+
 ```python
 def handle_missing_values(data):
     """Handles missing values in the dataset."""
@@ -68,8 +102,11 @@ def handle_missing_values(data):
             data.dropna(subset=[col], inplace=True)
     return data
 ```
-3.3 Dropping Unnecessary Columns
+
+### 3.3 Dropping Unnecessary Columns
+
 This function removes columns with excessive missing values:
+
 ```python
 def drop_unnecessary_columns(data):
     """Drops columns with more than 50% missing values."""
@@ -78,16 +115,22 @@ def drop_unnecessary_columns(data):
         data.drop(columns=columns_to_drop, inplace=True)
     return data
 ```
-3.4 Standardizing Column Names
+
+### 3.4 Standardizing Column Names
+
 This function ensures consistent column naming conventions:
+
 ```python
 def standardize_columns(data):
     """Standardizes column names by removing spaces and special characters."""
     data.columns = [col.strip().replace(' ', '_').lower() for col in data.columns]
     return data
 ```
-3.5 Handling Outliers
+
+### 3.5 Handling Outliers
+
 This function identifies and handles outliers using the Interquartile Range (IQR) method:
+
 ```python
 def handle_outliers(data):
     """Handles outliers in numeric columns by capping them to IQR bounds."""
@@ -104,8 +147,11 @@ def handle_outliers(data):
         )
     return data
 ```
-4. Main Cleaning Function
-The data_cleaner function orchestrates the entire cleaning process:
+
+## 4. Main Cleaning Function
+
+The `data_cleaner` function orchestrates the entire cleaning process:
+
 ```python
 def data_cleaner(data_path, data_name):
     """Main function to clean the dataset."""
@@ -130,8 +176,11 @@ def data_cleaner(data_path, data_name):
     
     return data
 ```
-5. Example Usage
+
+## 5. Example Usage
+
 Here's how you can use the data cleaner:
+
 ```python
 # Example usage
 data_path = 'path/to/your/dataset.csv'  # Replace with your dataset path
@@ -140,41 +189,31 @@ data_name = 'my_dataset'
 cleaned_data = data_cleaner(data_path, data_name)
 ```
 
-Key Features of the Data Cleaner
+## Key Features of the Data Cleaner
 
-The data cleaner includes several powerful features:
+### **Flexible File Format Support**
 
-Flexible File Format Support
+- Handles CSV, Excel, JSON, and Parquet files
+- Automatic format detection using file extension
 
-Handles CSV, Excel, JSON, and Parquet files
-Automatic format detection using file extension
+### **Comprehensive Cleaning Steps**
 
-Comprehensive Cleaning Steps
+- Duplicate record handling with backup
+- Intelligent missing value treatment
+- Removal of columns with excessive missing data
+- Column name standardization
+- Outlier detection and handling using the IQR method
 
-Duplicate record handling with backup
-Intelligent missing value treatment
-Removal of columns with excessive missing data
-Column name standardization
-Outlier detection and handling using IQR method
+### **User-Friendly Features**
 
-User-Friendly Features
+- Progress updates throughout the cleaning process
+- Automatic saving of cleaned dataset
+- Preservation of duplicate records for reference
 
-Progress updates throughout the cleaning process
-Automatic saving of cleaned dataset
-Preservation of duplicate records for reference
+### **Error Handling**
 
-Error Handling
-
-File path validation
-File format validation
-Graceful handling of various data types
+- File path validation
+- File format validation
+- Graceful handling of various data types
 
 This script provides a robust foundation for data cleaning tasks and can be easily extended with additional functionality as needed.
-
-
-
-
-
-
-
-
